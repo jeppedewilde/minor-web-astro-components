@@ -1,15 +1,15 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro'
+import MainLayout from '../../layouts/MainLayout.astro'
 
 const searchUrl =
-  'https://api.artic.edu/api/v1/artworks/search?q=cat&limit=9&page=10&fields=id,title,image_id,color'
+  'https://api.artic.edu/api/v1/artworks/search?q=dog&limit=9&page=3&fields=id,title,image_id,color'
 const res = await fetch(searchUrl)
 const artworksData = await res.json()
 const iiifBase = artworksData.config?.iiif_url ?? 'https://www.artic.edu/iiif/2'
 
 ---
 
-<MainLayout title="Cat art" description="Cat art">
+<MainLayout title="Dog art" description="Dog art">
   <section class="artworks">
 		{ artworksData.data && (	
 			artworksData.data.map((artwork) => (

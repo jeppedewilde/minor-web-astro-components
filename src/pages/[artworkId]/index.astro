@@ -1,0 +1,97 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro'
+
+export const prerender = false
+
+const { artworkId } = Astro.params
+const artwork = await fetch(`https://api.artic.edu/api/v1/artworks/${artworkId}`);
+const artworkData = await artwork.json();
+console.log(artworkData);
+
+const iiifBase = artworkData.config?.iiif_url ?? 'https://www.artic.edu/iiif/2'
+---
+
+<MainLayout title={artworkData.data.title} description={artworkData.data.title}>
+	<section class="artwork-header" style={`--color-accent: hsl(${artworkData.data.color.h}, ${artworkData.data.color.s}%, ${artworkData.data.color.l}%)`}>
+		<div class="artwork-header-image">
+			<img
+				src={`${iiifBase}/${artworkData.data.image_id}/full/843,/0/default.jpg`}
+				alt={artworkData.data.title}
+				width="843"
+				loading="lazy"
+			/>
+		</div>
+		<div class="artwork-header-content text-content-spacing">
+			<h1 class="large-heading">
+				{artworkData.data.title}
+			</h1>
+			<p class="meta small-body">
+				<span>
+					{artworkData.data.date_display}
+				</span>
+				<span>
+					{artworkData.data.artwork_type_title}
+				</span>
+				{ artworkData.data.technique_titles && (
+					artworkData.data.technique_titles.map((technique) => (
+						<span>
+							{technique}
+						</span>
+					))
+				)}
+			</p>
+			<p class="small-body">
+				{artworkData.data.thumbnail.alt_text}
+			</p>
+			<h2 class="medium-heading">
+				About the artist: {artworkData.data.artist_title}
+			</h2>
+			<p class="small-body">
+				{artworkData.data.artist_display}
+			</p>
+			<a href={`${iiifBase}/${artworkData.data.image_id}/full/843,/0/default.jpg`} target="_blank">
+				View full image
+			</a>
+		</div>
+	</section>
+</MainLayout>
+
+<style>
+	.artwork-header {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		align-items: center;
+		background-color: var(--color-accent);
+		min-height: 100svh;
+		@media (max-width: 768px) {
+			grid-template-columns: 1fr;
+		}
+	}
+	.artwork-header-image {
+		width: 100%;
+		height: auto;
+		position: relative;
+		img {
+			display: block;
+			width: 100%;
+			height: auto;
+			object-fit: cover;
+		}
+	}
+	.artwork-header-content {
+		padding: var(--padding-block) var(--padding-inline);
+		.meta {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5em;
+			span {
+				background-color: var(--color-text);
+				color: var(--color-accent);
+				padding: 0.25em 0.5em;
+				border-radius: 0.5em;
+				text-transform: uppercase;
+				font-variation-settings: 'wght' 500;
+			}
+		}
+	}
+</style>

@@ -1,0 +1,67 @@
+---
+// get current url path
+const currentPath = Astro.url.pathname;
+const pages = [
+  {
+    href: "/",
+    label: "Cat art",
+  },
+  {
+    href: "/dog",
+    label: "Dog art",
+  },
+];
+---
+
+<header>
+  <nav>
+    <a href="/" class="medium-heading">
+      🎨 Art Institute of Chicago
+    </a>
+    <ul>
+      {
+        pages.map((page) => (
+          <li>
+            <a
+              href={page.href}
+              class:list={[currentPath === page.href && "active"]}
+            >
+              {page.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<style>
+  header {
+    gap: var(--gap);
+    padding: var(--padding-inline);
+    background-color: var(--color-text);
+    color: var(--color-background);
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gap);
+      justify-content: space-between;
+      align-items: center;
+    }
+    ul {
+      display: flex;
+      justify-content: end;
+      align-items: center;
+      list-style: none;
+      gap: var(--gap);
+      padding: 0;
+    }
+    a {
+      text-decoration: none;
+      font-weight: 700;
+      &.active {
+        text-decoration: underline;
+      }
+    }
+  }
+</style>
