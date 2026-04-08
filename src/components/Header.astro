@@ -1,0 +1,43 @@
+---
+const currentPath = Astro.url.pathname;
+---
+<header>
+    <a href="/">Mijn fantastische website 👹</a>
+    <nav>
+        <ul>
+            <li>
+                <a href="/" class={currentPath === '/' ? 'active' : ''}>Cats</a>
+            </li>
+            <li>
+                <a href="/dog" class={currentPath === '/dog' ? 'active' : ''}>Dogs</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<style>
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+
+        ul {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: teal;
+            font-weight: bold;
+        }
+
+        .active {
+            background: tan;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+    }
+</style>

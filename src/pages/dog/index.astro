@@ -1,11 +1,20 @@
 ---
+import MainLayout from '../../layouts/MainLayout.astro';
+import Artwork from '../../components/Artwork.astro';
+
 const res = await fetch('https://api.artic.edu/api/v1/artworks/search?q=dog&limit=9&page=3&fields=id,title,image_id,color')
 const artworksData = await res.json()
 const imageBase = 'https://www.artic.edu/iiif/2'
 const imageEnd = '/full/843,/0/default.jpg'
 ---
 
-
+<MainLayout title="Dog art">
+	{ artworksData.data.map ( artwork => {
+		return (
+			<Artwork imageURL={`${imageBase}/${artwork.image_id}${imageEnd}`} title={artwork.title} />
+		)
+	} ) }
+</MainLayout>
 
 <!-- <style>
 	.artworks {

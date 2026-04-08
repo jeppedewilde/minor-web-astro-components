@@ -1,18 +1,26 @@
 ---
+import MainLayout from '../layouts/MainLayout.astro';
+import Button from '../components/Button.astro';
+import Artwork from '../components/Artwork.astro';
+
 const res = await fetch('https://api.artic.edu/api/v1/artworks/search?q=cat&limit=9&page=10&fields=id,title,image_id,color')
 const artworksData = await res.json()
 const imageBase = 'https://www.artic.edu/iiif/2'
 const imageEnd = '/full/843,/0/default.jpg'
+
+console.log(artworksData.data);
 ---
 
-
-<html>
-	<head>
-		<title>Cat art</title>
-	</head>
-	<body>
-		<h1>
-			Add cat art here
-		</h1>
-	</body>
-</html>
+<MainLayout title="Cat art">
+	<Button href="/dog" text="See dog art" />
+	<Button href="/" text="See cat art" />
+	{ artworksData.data.map ( artwork => {
+		return (
+			<Artwork imageURL={`${imageBase}/${artwork.image_id}${imageEnd}`} title={artwork.title} />
+			// <article>
+			// 	<img src={`${imageBase}/${artwork.image_id}${imageEnd}`} alt={artwork.title} />
+			// 	<h2>{artwork.title}</h2>			
+			// </article>
+		)
+	} ) }
+</MainLayout>
